@@ -9,6 +9,7 @@ import dev.ronse.redalert.RedAlert;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Set;
 
 public class Translator {
@@ -21,9 +22,9 @@ public class Translator {
         ALL_DISTRICTS = jsonElement.getAsJsonArray();
     }
 
-    public static String getDistrictInEnglish(String heb) {
-        if(ALL_DISTRICTS == null) load();
+    static { load(); }
 
+    public static String getDistrictInEnglish(String heb) {
         for(JsonElement dist : ALL_DISTRICTS) {
             JsonObject obj = dist.getAsJsonObject();
             if(obj.get("label_he").getAsString().equals(heb)) return obj.get("label").getAsString();
@@ -35,6 +36,20 @@ public class Translator {
     public static Set<String> translateAllToEnglish(Iterable<String> itr) {
         Set<String> set = new HashSet<>();
         for(String dist : itr) set.add(getDistrictInEnglish(dist));
+
+        return set;
+    }
+
+    public static Set<String> getRandomStates(int n) {
+        Set<String> set = new HashSet<>();
+        Random random = new Random(System.currentTimeMillis());
+
+        while(set.size() < n)
+            set.add(
+                    ALL_DISTRICTS.get(
+                            random.nextInt(ALL_DISTRICTS.size())
+                    ).getAsJsonObject().get("label_he").getAsString()
+            );
 
         return set;
     }
