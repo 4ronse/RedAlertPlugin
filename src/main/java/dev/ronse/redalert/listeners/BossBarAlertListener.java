@@ -10,8 +10,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BossBarListener extends BaseOrefAlertListener {
-    public BossBarListener(RedAlert plugin) {
+public class BossBarAlertListener extends BaseOrefAlertListener {
+    public BossBarAlertListener(RedAlert plugin) {
         super(plugin);
     }
 

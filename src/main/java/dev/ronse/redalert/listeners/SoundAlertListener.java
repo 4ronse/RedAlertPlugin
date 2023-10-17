@@ -7,8 +7,8 @@ import net.kyori.adventure.sound.Sound;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class SoundListener extends BaseOrefAlertListener {
-    public SoundListener(RedAlert plugin) {
+public class SoundAlertListener extends BaseOrefAlertListener {
+    public SoundAlertListener(RedAlert plugin) {
         super(plugin);
     }
 
