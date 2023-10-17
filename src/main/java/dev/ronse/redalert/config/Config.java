@@ -6,12 +6,8 @@ import dev.ronse.redalert.config.models.notifiers.BossbarNotifier;
 import dev.ronse.redalert.config.models.notifiers.ChatNotifier;
 import dev.ronse.redalert.config.models.notifiers.ConsoleNotifier;
 import net.kyori.adventure.bossbar.BossBar;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-
-import java.io.File;
 
 public class Config {
     static {
@@ -20,9 +16,6 @@ public class Config {
         ConfigurationSerialization.registerClass(ConsoleNotifier.class);
         ConfigurationSerialization.registerClass(ChatNotifier.class);
     }
-
-    // private final File CONFIG_LOCATION;
-    // private final YamlConfiguration CONFIG;
 
     private final RedAlert PLUGIN;
     private final FileConfiguration CONFIG;
@@ -48,11 +41,9 @@ public class Config {
         ChatNotifier chatNotifier = new ChatNotifier();
         ConsoleNotifier consoleNotifier = new ConsoleNotifier();
 
-        bossbarNotifier.duration = 10;
-        bossbarNotifier.newLineEvery = 8;
+        bossbarNotifier.duration = 15;
         bossbarNotifier.color = BossBar.Color.RED;
-        bossbarNotifier.titleFormat = "&#AA0000צבע אדום";
-        bossbarNotifier.contentFormat = "&#F00000%cities_he%";
+        bossbarNotifier.format = "&#AA0000%cities_he%";
 
         chatNotifier.format = "&#AA0000צבע אדום ב&#FF0000&l%cities_he%";
 

@@ -8,18 +8,14 @@ import java.util.Map;
 public class BossbarNotifier implements Notifier {
     public BossBar.Color color;
     public int duration;
-    public int newLineEvery;
-    public String contentFormat;
-    public String titleFormat;
+    public String format;
 
     @Override
     public @NotNull Map<String, Object> serialize() {
         return Map.of(
                 "color", color.name(),
                 "duration", duration,
-                "new_line_every", newLineEvery,
-                "title_format", titleFormat,
-                "content_format", contentFormat
+                "format", format
         );
     }
 
@@ -28,9 +24,7 @@ public class BossbarNotifier implements Notifier {
 
         notifier.color = BossBar.Color.valueOf((String) map.getOrDefault("color", "RED"));
         notifier.duration = (int) map.getOrDefault("duration", 10);
-        notifier.newLineEvery = (int) map.getOrDefault("new_line_every", 8);
-        notifier.titleFormat = (String) map.getOrDefault("title_format", "");
-        notifier.contentFormat = (String) map.getOrDefault("content_format", "");
+        notifier.format = (String) map.getOrDefault("format", "");
 
         return notifier;
     }
@@ -40,9 +34,7 @@ public class BossbarNotifier implements Notifier {
         return "BossbarNotifier{" +
                 "color=" + color +
                 ", duration=" + duration +
-                ", newLineEvery=" + newLineEvery +
-                ", contentFormat='" + contentFormat + '\'' +
-                ", titleFormat='" + titleFormat + '\'' +
+                ", format='" + format + '\'' +
                 '}';
     }
 }
