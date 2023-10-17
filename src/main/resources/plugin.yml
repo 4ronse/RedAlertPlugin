@@ -1,0 +1,14 @@
+name: RedAlert
+version: '${project.version}'
+main: dev.ronse.redalert.RedAlert
+api-version: '1.20'
+authors: [4ronse]
+description: Sends "Tseva Adom" alerts in chat
+website: 4ronse.dev
+
+commands:
+  redalertdump:
+    description: "Bruh"
+
+  redalerttest:
+    description: "Bruh"
