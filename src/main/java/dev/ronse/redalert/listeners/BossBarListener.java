@@ -4,14 +4,10 @@ import dev.ronse.redalert.RedAlert;
 import dev.ronse.redalert.orefalerts.OrefAlert;
 import dev.ronse.redalert.util.Format;
 import net.kyori.adventure.bossbar.BossBar;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class BossBarListener extends BaseOrefAlertListener {
@@ -19,7 +15,7 @@ public class BossBarListener extends BaseOrefAlertListener {
         super(plugin);
     }
 
-    private final Map<Long, BossBar> bossbars = new HashMap<>();
+    private final Map<Long, BossBar> bossBars = new HashMap<>();
 
     @Override
     public void onOrefAlert(OrefAlert alert) {
@@ -33,8 +29,8 @@ public class BossBarListener extends BaseOrefAlertListener {
         );
 
         for(var p : Bukkit.getOnlinePlayers()) {
-            if(bossbars.containsKey(alert.getId())) p.hideBossBar(bossbars.get(alert.getId()));
-            bossbars.put(alert.getId(), bar);
+            if(bossBars.containsKey(alert.getId())) p.hideBossBar(bossBars.get(alert.getId()));
+            bossBars.put(alert.getId(), bar);
 
             p.showBossBar(bar);
 
