@@ -6,6 +6,7 @@ import dev.ronse.redalert.config.Config;
 import dev.ronse.redalert.listeners.BossBarListener;
 import dev.ronse.redalert.listeners.ChatAlertListener;
 import dev.ronse.redalert.listeners.ConsoleAlertListener;
+import dev.ronse.redalert.listeners.SoundListener;
 import dev.ronse.redalert.orefalerts.OrefAlertNotifier;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
@@ -28,6 +29,7 @@ public final class RedAlert extends JavaPlugin {
                 .listener(new ConsoleAlertListener(this))
                 .listener(new ChatAlertListener(this))
                 .listener(new BossBarListener(this))
+                .listener(new SoundListener(this))
                 .onException(ex -> getSLF4JLogger().error("Failed to check for alerts", ex))
                 .build();
         notifier.listen();
