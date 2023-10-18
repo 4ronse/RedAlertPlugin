@@ -1,6 +1,7 @@
 package dev.ronse.redalert.orefalerts;
 
 import dev.ronse.redalert.Requester;
+import dev.ronse.redalert.exceptions.ConfigNotReady;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -42,11 +43,11 @@ public class OrefAlertNotifier {
                         lastAlert = isTest ? lastAlert : alert;
 
                         this.listeners.forEach(l -> l.onOrefAlert(alert));
-                    } catch (Exception e) {
+                    } catch (ConfigNotReady ignored) {} catch (Exception e) {
                         this.exceptionConsumer.accept(e);
                     }
                 }
-            }  finally {
+            } finally {
                 this.listeners.clear();
             }
         });
