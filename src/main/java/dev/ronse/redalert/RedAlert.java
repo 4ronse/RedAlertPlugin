@@ -39,7 +39,7 @@ public final class RedAlert extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        notifier.stop();
+        if(notifier != null) notifier.stop();
 
         instance = null;
         notifier = null;
@@ -60,6 +60,7 @@ public final class RedAlert extends JavaPlugin {
     void registerCommands() {
         RedAlertCommand redAlertCommand = new RedAlertCommand();
 
+        redAlertCommand.registerCommand(new RedAlertHelpCommand(redAlertCommand));
         redAlertCommand.registerCommand(new RedAlertReloadCommand());
         redAlertCommand.registerCommand(new RedAlertTestCommand());
 

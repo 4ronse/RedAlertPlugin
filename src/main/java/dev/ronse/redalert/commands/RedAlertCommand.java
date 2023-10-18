@@ -47,7 +47,7 @@ public class RedAlertCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if(!sender.hasPermission(perm)) {
+        if(perm != null && !sender.hasPermission(perm)) {
             sender.sendMessage("You lil nigga, try becoming a big nigga");
             return true;
         }
@@ -86,6 +86,10 @@ public class RedAlertCommand implements CommandExecutor, TabCompleter {
         return List.of();
     }
 
+    protected List<IRedAlertCommand> getCommands() {
+        return List.copyOf(commands);
+    }
+
 
     private List<String> validateArgs(IRedAlertCommand cmd, List<String> args) throws ArgumentException {
         // Validate number of args
@@ -120,10 +124,10 @@ public class RedAlertCommand implements CommandExecutor, TabCompleter {
 
             try {
                 boolean valid = (boolean) method.invoke(cmd, args.get(v.position()));
-                if(!valid) invalidArgs.addFirst(v.name());
+                if(!valid) invalidArgs.add(0, v.name());
             } catch (ArrayIndexOutOfBoundsException ignored) {
                 if(!v.required()) continue;
-                invalidArgs.addFirst(v.name());
+                invalidArgs.add(0, v.name());
             } catch (IllegalAccessException | InvocationTargetException e) {
                 RedAlert.getInstance().getSLF4JLogger().error("Failed to validate " + v.name(), e);
             }

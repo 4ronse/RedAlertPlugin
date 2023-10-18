@@ -53,4 +53,8 @@ public class Translator {
 
         return set;
     }
+
+    public static int stateCount() {
+        return ALL_DISTRICTS.size();
+    }
 }
