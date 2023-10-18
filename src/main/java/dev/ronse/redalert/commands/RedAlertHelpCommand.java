@@ -5,7 +5,6 @@ import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
-import java.util.Optional;
 
 public class RedAlertHelpCommand implements IRedAlertCommand {
     private final RedAlertCommand main;
@@ -19,15 +18,13 @@ public class RedAlertHelpCommand implements IRedAlertCommand {
         List<IRedAlertCommand> allowedCommands = getAllowedCommands(sender);
 
         if(args.isEmpty()) {
-            allowedCommands.forEach(cmd -> {
-                sender.sendMessage(
-                        Component.text("/redalert").color(TextColor.fromHexString("#FF0000"))
-                                .append(Component.space())
-                                .append(Component.text(cmd.getName()).color(TextColor.fromHexString("#A00000")))
-                                .append(Component.text(" - ").color(TextColor.fromHexString("#FF0000")))
-                                .append(Component.text(cmd.getHelp()).color(TextColor.fromHexString("#A00000")))
-                );
-            });
+            allowedCommands.forEach(cmd -> sender.sendMessage(
+                    Component.text("/redalert").color(TextColor.fromHexString("#FF0000"))
+                            .append(Component.space())
+                            .append(Component.text(cmd.getName()).color(TextColor.fromHexString("#A00000")))
+                            .append(Component.text(" - ").color(TextColor.fromHexString("#FF0000")))
+                            .append(Component.text(cmd.getHelp()).color(TextColor.fromHexString("#A00000")))
+            ));
 
             return;
         }
@@ -57,7 +54,7 @@ public class RedAlertHelpCommand implements IRedAlertCommand {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, List<String> args) {
-        return IRedAlertCommand.super.onTabComplete(sender, args);
+        return IRedAlertCommand.super.onTabComplete(sender, List.of());
     }
 
     @Override

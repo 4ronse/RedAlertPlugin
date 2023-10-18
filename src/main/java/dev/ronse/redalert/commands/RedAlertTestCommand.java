@@ -9,13 +9,13 @@ import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class RedAlertTestCommand implements IRedAlertCommand {
-    // TODO: Limit alert count to the amount of districts available
-
     @Override
     public void onCommand(CommandSender sender, List<String> args) {
+        args.forEach(arg -> sender.sendMessage('"' + arg + '"'));
+        sender.sendMessage(String.valueOf(args.size()));
+
         int alertCategory = 1;
         int alertCount = 1;
 
@@ -35,12 +35,28 @@ public class RedAlertTestCommand implements IRedAlertCommand {
         if(args.size() == 1)
             return Arrays.stream(OrefAlertType.values()).map(Enum::name).toList();
 
-        if(args.size() == 2)
-            return IntStream.rangeClosed(1, 50)
-                    .boxed()
-                    .toList().stream().map(String::valueOf).toList();
-
         return List.of();
+    }
+
+    @Validator(name = "Category", position = 0, required = false)
+    boolean validateCategory(String value) {
+        try {
+            OrefAlertType.valueOf(value);
+        } catch (IllegalArgumentException ignored) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Validator(name = "Count", position = 1, required = false)
+    boolean validateCount(String value) {
+        try {
+            int n = Integer.parseInt(value);
+            return n > 0 && n <= 500;
+        } catch (Exception ignored) {
+            return false;
+        }
     }
 
     @Override

@@ -6,8 +6,6 @@ import dev.ronse.redalert.exceptions.ArgumentCountException;
 import dev.ronse.redalert.exceptions.ArgumentException;
 import dev.ronse.redalert.exceptions.NotEnoughArguments;
 import dev.ronse.redalert.exceptions.TooManyArguments;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import org.bukkit.command.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -60,11 +58,7 @@ public class RedAlertCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            TextComponent tc = Component.empty();
-            for(var arg : args)
-                tc = tc.append(Component.text(arg + " is invalid").appendNewline());
-
-            sender.sendMessage(tc);
+            invalidArgs.forEach(arg -> sender.sendMessage("Value for argument " + arg + " is invalid."));
 
         } catch (ArgumentException e) {
             sender.sendMessage(e.getMessage());
@@ -123,8 +117,12 @@ public class RedAlertCommand implements CommandExecutor, TabCompleter {
             method.setAccessible(true);
 
             try {
-                boolean valid = (boolean) method.invoke(cmd, args.get(v.position()));
-                if(!valid) invalidArgs.add(0, v.name());
+                try {
+                    boolean valid = (boolean) method.invoke(cmd, args.get(v.position()));
+                    if (!valid) invalidArgs.add(0, v.name());
+                } catch (IndexOutOfBoundsException ignored) {
+                    if(v.required()) invalidArgs.add(0, v.name());
+                }
             } catch (ArrayIndexOutOfBoundsException ignored) {
                 if(!v.required()) continue;
                 invalidArgs.add(0, v.name());
