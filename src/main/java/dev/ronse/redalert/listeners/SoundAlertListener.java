@@ -15,7 +15,13 @@ public class SoundAlertListener extends BaseOrefAlertListener {
     @Override
     public void onOrefAlert(OrefAlert alert) {
         for(Player p : Bukkit.getOnlinePlayers())
-            p.playSound(Sound.sound(Key.key("block.note_block.iron_xylophone"),
-                    Sound.Source.MASTER, 2f, .1f));
+            p.playSound(
+                    Sound.sound(
+                            RedAlert.config.notifiers.soundNotifier.soundKey,
+                            RedAlert.config.notifiers.soundNotifier.source,
+                            RedAlert.config.notifiers.soundNotifier.volume,
+                            RedAlert.config.notifiers.soundNotifier.pitch
+                    )
+            );
     }
 }
