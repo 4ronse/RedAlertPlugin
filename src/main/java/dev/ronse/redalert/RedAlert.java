@@ -1,6 +1,9 @@
 package dev.ronse.redalert;
 
-import dev.ronse.redalert.commands.*;
+import dev.ronse.redalert.commands.RedAlertCommand;
+import dev.ronse.redalert.commands.RedAlertHelpCommand;
+import dev.ronse.redalert.commands.RedAlertReloadCommand;
+import dev.ronse.redalert.commands.RedAlertTestCommand;
 import dev.ronse.redalert.config.Config;
 import dev.ronse.redalert.listeners.BossBarAlertListener;
 import dev.ronse.redalert.listeners.ChatAlertListener;
@@ -30,7 +33,9 @@ public final class RedAlert extends JavaPlugin {
                 .listener(new BossBarAlertListener(this))
                 .listener(new SoundAlertListener(this))
                 .onException(ex -> getSLF4JLogger().error("Failed to check for alerts", ex))
+                .onTimeout(ex -> getSLF4JLogger().warn("Alert source timed out."))
                 .build();
+
         notifier.listen();
 
         registerCommands();

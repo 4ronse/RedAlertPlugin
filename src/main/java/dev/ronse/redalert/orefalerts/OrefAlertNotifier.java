@@ -3,6 +3,7 @@ package dev.ronse.redalert.orefalerts;
 import dev.ronse.redalert.Requester;
 import dev.ronse.redalert.exceptions.ConfigNotReady;
 
+import java.net.SocketTimeoutException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -13,15 +14,17 @@ public class OrefAlertNotifier {
     private final Set<OrefAlertListener> listeners;
     private final int delay;
     private final Consumer<Exception> exceptionConsumer;
+    private final Consumer<SocketTimeoutException> timeoutConsumer;
 
     private boolean stop = false;
 
     private OrefAlert testAlert = null;
 
-    private OrefAlertNotifier(int delay, Set<OrefAlertListener> listeners, Consumer<Exception> exceptionConsumer) {
+    private OrefAlertNotifier(int delay, Set<OrefAlertListener> listeners, Consumer<Exception> exceptionConsumer, Consumer<SocketTimeoutException> timeoutConsumer) {
         this.listeners = listeners;
         this.delay = delay;
         this.exceptionConsumer = exceptionConsumer;
+        this.timeoutConsumer = timeoutConsumer;
     }
 
     public CompletableFuture<Void> listen() {
@@ -43,7 +46,9 @@ public class OrefAlertNotifier {
                         lastAlert = isTest ? lastAlert : alert;
 
                         this.listeners.forEach(l -> l.onOrefAlert(alert));
-                    } catch (ConfigNotReady ignored) {} catch (Exception e) {
+                    } catch (ConfigNotReady ignored) {} catch (SocketTimeoutException e) {
+                        this.timeoutConsumer.accept(e);
+                    } catch (Exception e) {
                         this.exceptionConsumer.accept(e);
                     }
                 }
@@ -64,6 +69,7 @@ public class OrefAlertNotifier {
     public static class Builder {
         private int delay = 1;
         private Consumer<Exception> exceptionConsumer = (ex) -> {};
+        private Consumer<SocketTimeoutException> timeoutConsumer = (ex) -> {};
 
         private final Set<OrefAlertListener> listeners = new HashSet<>();
 
@@ -84,8 +90,13 @@ public class OrefAlertNotifier {
             return this;
         }
 
+        public Builder onTimeout(Consumer<SocketTimeoutException> ste) {
+            this.timeoutConsumer = ste;
+            return this;
+        }
+
         public OrefAlertNotifier build() {
-            return new OrefAlertNotifier(delay, listeners, exceptionConsumer);
+            return new OrefAlertNotifier(delay, listeners, exceptionConsumer, timeoutConsumer);
         }
     }
 }
