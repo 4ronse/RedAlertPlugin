@@ -7,8 +7,5 @@ description: Sends "Tseva Adom" alerts in chat
 website: 4ronse.dev
 
 commands:
-  redalertdump:
-    description: "Bruh"
-
-  redalerttest:
+  redalert:
     description: "Bruh"

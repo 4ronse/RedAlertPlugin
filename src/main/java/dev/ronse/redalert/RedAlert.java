@@ -1,7 +1,6 @@
 package dev.ronse.redalert;
 
-import dev.ronse.redalert.commands.RedAlertDump;
-import dev.ronse.redalert.commands.RedAlertTest;
+import dev.ronse.redalert.commands.*;
 import dev.ronse.redalert.config.Config;
 import dev.ronse.redalert.listeners.BossBarAlertListener;
 import dev.ronse.redalert.listeners.ChatAlertListener;
@@ -59,7 +58,11 @@ public final class RedAlert extends JavaPlugin {
     }
 
     void registerCommands() {
-        _registerCommand("redalertdump", new RedAlertDump());
-        _registerCommand("redalerttest", new RedAlertTest());
+        RedAlertCommand redAlertCommand = new RedAlertCommand();
+
+        redAlertCommand.registerCommand(new RedAlertReloadCommand());
+        redAlertCommand.registerCommand(new RedAlertTestCommand());
+
+        _registerCommand("redalert", redAlertCommand);
     }
 }
