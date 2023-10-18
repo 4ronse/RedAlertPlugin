@@ -2,6 +2,7 @@ package dev.ronse.redalert;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import dev.ronse.redalert.exceptions.ConfigNotReady;
 import dev.ronse.redalert.exceptions.ResponseStatusException;
 import dev.ronse.redalert.orefalerts.OrefAlert;
 import okhttp3.OkHttpClient;
@@ -11,7 +12,9 @@ import okhttp3.ResponseBody;
 
 import java.io.IOException;
 public class Requester {
-    public static OrefAlert checkForAlerts() throws IOException, ResponseStatusException {
+    public static OrefAlert checkForAlerts() throws IOException, ResponseStatusException, ConfigNotReady {
+        if(RedAlert.config == null) throw new ConfigNotReady();
+
         String url = RedAlert.config.debug ? RedAlert.config.debugSource :
                 "https://www.oref.org.il/WarningMessages/alert/alerts.json";
 
