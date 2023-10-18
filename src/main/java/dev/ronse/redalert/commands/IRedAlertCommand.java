@@ -6,9 +6,10 @@ import java.util.List;
 
 public interface IRedAlertCommand {
     default String permission() { return null; }
-    default int numArgs() { return 0; }
+    default int numArgs() { return -1; }
     default int minArgs() { return -1; }
     default int maxArgs() { return -1; }
+    default boolean consoleAllowed() { return true; }
 
     String getName();
 
