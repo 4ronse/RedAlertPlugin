@@ -1,7 +1,6 @@
 package dev.ronse.redalert.commands;
 
 import dev.ronse.redalert.RedAlert;
-import dev.ronse.redalert.commands.validator.Validator;
 import dev.ronse.redalert.orefalerts.OrefAlert;
 import dev.ronse.redalert.orefalerts.OrefAlertType;
 import dev.ronse.redalert.util.Translator;

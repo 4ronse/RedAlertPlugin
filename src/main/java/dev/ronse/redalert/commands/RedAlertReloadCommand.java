@@ -1,8 +1,6 @@
 package dev.ronse.redalert.commands;
 
 import dev.ronse.redalert.RedAlert;
-import dev.ronse.redalert.commands.validator.Validator;
-import dev.ronse.redalert.orefalerts.OrefAlertType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.command.CommandSender;

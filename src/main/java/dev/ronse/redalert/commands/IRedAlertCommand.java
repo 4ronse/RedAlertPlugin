@@ -14,5 +14,5 @@ public interface IRedAlertCommand {
     String getName();
 
     void onCommand(CommandSender sender, List<String> args);
-    default List<String> onTabComplete(CommandSender sender, List<String> args) { return List.of(); };
+    default List<String> onTabComplete(CommandSender sender, List<String> args) { return List.of(); }
 }
