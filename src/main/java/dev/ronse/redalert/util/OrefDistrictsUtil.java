@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
-public class Translator {
+public class OrefDistrictsUtil {
     private static JsonArray ALL_DISTRICTS = null;
 
     private static void load() {

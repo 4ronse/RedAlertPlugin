@@ -10,7 +10,7 @@ import java.util.List;
 public class RedAlertReloadCommand implements IRedAlertCommand {
     @Override
     public void onCommand(CommandSender sender, List<String> args) {
-        RedAlert.config.reload();
+        RedAlert.getInstance().reloadConfig();
 
         sender.sendMessage(
                 Component.text("[Red Alert]").color(TextColor.fromHexString("#A00000"))

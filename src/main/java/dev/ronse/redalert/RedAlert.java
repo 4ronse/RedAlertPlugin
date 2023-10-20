@@ -1,21 +1,16 @@
 package dev.ronse.redalert;
 
-import dev.ronse.redalert.commands.RedAlertCommand;
-import dev.ronse.redalert.commands.RedAlertHelpCommand;
-import dev.ronse.redalert.commands.RedAlertReloadCommand;
-import dev.ronse.redalert.commands.RedAlertTestCommand;
+import dev.ronse.redalert.commands.*;
 import dev.ronse.redalert.config.Config;
-import dev.ronse.redalert.listeners.BossBarAlertListener;
-import dev.ronse.redalert.listeners.ChatAlertListener;
-import dev.ronse.redalert.listeners.ConsoleAlertListener;
-import dev.ronse.redalert.listeners.SoundAlertListener;
+import dev.ronse.redalert.config.ConfigNew;
+import dev.ronse.redalert.listeners.*;
 import dev.ronse.redalert.orefalerts.OrefAlertNotifier;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RedAlert extends JavaPlugin {
-    public static Config config;
+    public static ConfigNew config;
     private static RedAlert instance = null;
     public static RedAlert getInstance() { return instance; }
 
@@ -24,30 +19,55 @@ public final class RedAlert extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        config = new Config(this);
+        // config = new Config(this);
 
-        notifier = new OrefAlertNotifier.Builder()
-                .every(config.delay)
-                .listener(new ConsoleAlertListener(this))
-                .listener(new ChatAlertListener(this))
-                .listener(new BossBarAlertListener(this))
-                .listener(new SoundAlertListener(this))
-                .onException(ex -> getSLF4JLogger().error("Failed to check for alerts", ex))
-                .onTimeout(ex -> getSLF4JLogger().warn("Alert source timed out."))
-                .build();
+        // try {
+        //     var cfg = new ConfigNew(this);
+        //     getSLF4JLogger().info(cfg.toString());
+        // } catch (Exception e) {
+        //     getSLF4JLogger().error("Failed to load new config", e);
+        // }
 
-        notifier.listen();
-
+        reloadConfig();
         registerCommands();
+    }
+
+    @Override
+    public void reloadConfig() {
+        shutdownNotifier();
+        config = new ConfigNew(this);
+
+        var builder = new OrefAlertNotifier.Builder()
+                .every(config.interval)
+                .onException(ex -> getSLF4JLogger().error("Failed to check for alerts", ex))
+                .onTimeout(ex -> getSLF4JLogger().warn("Alert source timed out."));
+
+        config.notifiers.values().forEach(list -> list.forEach(builder::listener));
+        notifier = builder.build();
+        notifier.listen();
+    }
+
+    private void shutdownNotifier() {
+        if(notifier != null) {
+            notifier.stop();
+
+            notifier.getListeners().forEach(listener -> {
+                if(listener instanceof IDisableAction)
+                    ((IDisableAction) listener).onDisable();
+            });
+
+            notifier.clear();
+        }
+
+        notifier = null;
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        if(notifier != null) notifier.stop();
+        shutdownNotifier();
 
         instance = null;
-        notifier = null;
         config = null;
     }
 

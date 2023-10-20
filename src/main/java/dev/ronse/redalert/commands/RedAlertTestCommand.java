@@ -4,7 +4,7 @@ import dev.ronse.redalert.RedAlert;
 import dev.ronse.redalert.commands.validator.Validator;
 import dev.ronse.redalert.orefalerts.OrefAlert;
 import dev.ronse.redalert.orefalerts.OrefAlertType;
-import dev.ronse.redalert.util.Translator;
+import dev.ronse.redalert.util.OrefDistrictsUtil;
 import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
@@ -13,9 +13,6 @@ import java.util.List;
 public class RedAlertTestCommand implements IRedAlertCommand {
     @Override
     public void onCommand(CommandSender sender, List<String> args) {
-        args.forEach(arg -> sender.sendMessage('"' + arg + '"'));
-        sender.sendMessage(String.valueOf(args.size()));
-
         int alertCategory = 1;
         int alertCount = 1;
 
@@ -25,7 +22,7 @@ public class RedAlertTestCommand implements IRedAlertCommand {
         RedAlert.getInstance().notifier.test(new OrefAlert(
                 0,
                 OrefAlertType.get(alertCategory),
-                Translator.getRandomStates(alertCount),
+                OrefDistrictsUtil.getRandomStates(alertCount),
                 "שצ"
         ));
     }
