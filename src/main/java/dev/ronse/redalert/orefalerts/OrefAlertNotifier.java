@@ -39,8 +39,8 @@ public class OrefAlertNotifier {
                         TimeUnit.SECONDS.sleep(this.delay);
 
                         boolean isTest = testAlert != null;
-                        OrefAlert alert = !isTest ? Requester.checkForAlerts() : testAlert;
-                        if(testAlert != null) testAlert = null;
+                        OrefAlert alert = isTest ? testAlert : Requester.checkForAlerts();
+                        if(isTest) testAlert = null;
 
                         if (alert == null) continue;
                         if (alert.equals(lastAlert)) continue;
@@ -65,19 +65,8 @@ public class OrefAlertNotifier {
     }
 
     public void stop() {
+        this.listeners.clear();
         stop = true;
-    }
-
-    public void resume() {
-        stop = false;
-    }
-
-    public void clear() {
-        listeners.clear();
-    }
-
-    public void addListener(OrefAlertListener listener) {
-        listeners.add(listener);
     }
 
     public List<OrefAlertListener> getListeners() {

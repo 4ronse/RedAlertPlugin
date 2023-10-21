@@ -10,7 +10,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RedAlert extends JavaPlugin {
-    public static ConfigNew config;
+    public static ConfigNew config = null;
     private static RedAlert instance = null;
     public static RedAlert getInstance() { return instance; }
 
@@ -19,14 +19,6 @@ public final class RedAlert extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        // config = new Config(this);
-
-        // try {
-        //     var cfg = new ConfigNew(this);
-        //     getSLF4JLogger().info(cfg.toString());
-        // } catch (Exception e) {
-        //     getSLF4JLogger().error("Failed to load new config", e);
-        // }
 
         reloadConfig();
         registerCommands();
@@ -55,8 +47,6 @@ public final class RedAlert extends JavaPlugin {
                 if(listener instanceof IDisableAction)
                     ((IDisableAction) listener).onDisable();
             });
-
-            notifier.clear();
         }
 
         notifier = null;

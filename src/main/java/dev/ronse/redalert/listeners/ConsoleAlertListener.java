@@ -2,6 +2,7 @@ package dev.ronse.redalert.listeners;
 
 import dev.ronse.redalert.RedAlert;
 import dev.ronse.redalert.orefalerts.OrefAlert;
+import dev.ronse.redalert.orefalerts.OrefAlertType;
 import dev.ronse.redalert.util.TextUtil;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.serialization.SerializableAs;
@@ -19,7 +20,7 @@ public class ConsoleAlertListener extends BaseOrefAlertListener {
     }
 
     @Override
-    public void onAlert(OrefAlert alert) {
+    public void onOrefAlert(OrefAlert alert) {
         plugin.getServer().getConsoleSender().sendMessage(TextUtil.deserialize(format, alert));
     }
 }

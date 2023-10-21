@@ -2,6 +2,7 @@ package dev.ronse.redalert.listeners;
 
 import dev.ronse.redalert.RedAlert;
 import dev.ronse.redalert.orefalerts.OrefAlert;
+import dev.ronse.redalert.orefalerts.OrefAlertType;
 import dev.ronse.redalert.util.TextUtil;
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.Bukkit;
@@ -30,7 +31,7 @@ public class BossBarAlertListener extends BaseOrefAlertListener implements IDisa
     private final Map<Long, BossBar> bossBars = new HashMap<>();
 
     @Override
-    public void onAlert(OrefAlert alert) {
+    public void onOrefAlert(OrefAlert alert) {
         BossBar bar = BossBar.bossBar(
                 TextUtil.deserialize(format, alert),
                 BossBar.MAX_PROGRESS,

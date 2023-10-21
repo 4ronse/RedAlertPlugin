@@ -1,7 +1,6 @@
 package dev.ronse.redalert.orefalerts;
 
 public enum OrefAlertType {
-    DEFAULT(Integer.MAX_VALUE),
     MISSILE_ALERT(1),
     UAV(2),
     NON_CONVENTIONAL(3),

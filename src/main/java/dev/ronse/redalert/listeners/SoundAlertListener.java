@@ -2,6 +2,7 @@ package dev.ronse.redalert.listeners;
 
 import dev.ronse.redalert.RedAlert;
 import dev.ronse.redalert.orefalerts.OrefAlert;
+import dev.ronse.redalert.orefalerts.OrefAlertType;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Bukkit;
@@ -28,7 +29,7 @@ public class SoundAlertListener extends BaseOrefAlertListener {
     }
 
     @Override
-    public void onAlert(OrefAlert alert) {
+    public void onOrefAlert(OrefAlert alert) {
         for(Player p : Bukkit.getOnlinePlayers())
             p.playSound(
                     Sound.sound(
