@@ -134,7 +134,7 @@ public class AlertTypeMap implements Map<OrefAlertType, List<OrefAlertListener>>
             map.get(alertType).add(listener);
         });
 
-        printMap(map, 0);
+        // printMap(map, 0);
 
         return map;
     }
