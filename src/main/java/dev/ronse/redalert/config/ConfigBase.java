@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+@SuppressWarnings({ "unused", "FieldCanBeLocal", "SameParameterValue" })
 public abstract class ConfigBase {
     private final Object NO_VALUE = new Object();
     protected final File file;

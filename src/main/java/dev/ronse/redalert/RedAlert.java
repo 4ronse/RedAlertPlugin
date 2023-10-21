@@ -78,6 +78,7 @@ public final class RedAlert extends JavaPlugin {
         config = null;
     }
 
+    @SuppressWarnings("all")
     void registerCommand(String name, CommandExecutor executor) {
         PluginCommand cmd = getCommand(name);
         if (cmd == null) {

@@ -13,6 +13,7 @@ public abstract class BaseOrefAlertListener implements OrefAlertListener {
         this.plugin = plugin;
     }
 
+    @SuppressWarnings("unused")
     public final boolean isDisabled() {
         return disabled;
     }

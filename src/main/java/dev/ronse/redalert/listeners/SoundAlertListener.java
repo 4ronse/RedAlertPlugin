@@ -18,6 +18,7 @@ public class SoundAlertListener extends BaseOrefAlertListener {
         super(plugin);
     }
 
+    @SuppressWarnings({ "all" })
     @Override
     public void loadFromMemorySection(MemorySection section) {
         soundKey = Key.key(section.getString("sound_key"));

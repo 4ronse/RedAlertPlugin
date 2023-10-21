@@ -139,6 +139,7 @@ public class AlertTypeMap implements Map<OrefAlertType, List<OrefAlertListener>>
         return map;
     }
 
+    @SuppressWarnings("unused")
     public static void printMap(Map<?, ?> map, int indent) {
         var logger = RedAlert.getInstance().getSLF4JLogger();
 

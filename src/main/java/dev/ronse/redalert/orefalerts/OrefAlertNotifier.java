@@ -27,6 +27,7 @@ public class OrefAlertNotifier {
         this.timeoutConsumer = timeoutConsumer;
     }
 
+    @SuppressWarnings({ "all" })
     public CompletableFuture<Void> listen() {
         return CompletableFuture.runAsync(() -> {
             OrefAlert lastAlert = null;
