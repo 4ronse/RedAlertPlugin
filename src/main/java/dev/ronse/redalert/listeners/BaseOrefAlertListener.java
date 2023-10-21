@@ -3,7 +3,6 @@ package dev.ronse.redalert.listeners;
 import dev.ronse.redalert.RedAlert;
 import dev.ronse.redalert.orefalerts.OrefAlert;
 import dev.ronse.redalert.orefalerts.OrefAlertListener;
-import dev.ronse.redalert.orefalerts.OrefAlertType;
 import org.bukkit.configuration.MemorySection;
 
 public abstract class BaseOrefAlertListener implements OrefAlertListener {

@@ -4,8 +4,6 @@ import dev.ronse.redalert.RedAlert;
 import dev.ronse.redalert.config.annotations.ConfigEntry;
 import dev.ronse.redalert.config.annotations.Key;
 import dev.ronse.redalert.config.models.AlertTypeMap;
-import dev.ronse.redalert.config.models.notifiers.Notifier;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
 

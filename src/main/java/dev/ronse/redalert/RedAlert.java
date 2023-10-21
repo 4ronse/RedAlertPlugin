@@ -1,7 +1,6 @@
 package dev.ronse.redalert;
 
 import dev.ronse.redalert.commands.*;
-import dev.ronse.redalert.config.Config;
 import dev.ronse.redalert.config.ConfigNew;
 import dev.ronse.redalert.listeners.*;
 import dev.ronse.redalert.orefalerts.OrefAlertNotifier;

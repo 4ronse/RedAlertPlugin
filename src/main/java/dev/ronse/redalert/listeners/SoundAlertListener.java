@@ -2,12 +2,10 @@ package dev.ronse.redalert.listeners;
 
 import dev.ronse.redalert.RedAlert;
 import dev.ronse.redalert.orefalerts.OrefAlert;
-import dev.ronse.redalert.orefalerts.OrefAlertType;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.MemorySection;
-import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.entity.Player;
 
 public class SoundAlertListener extends BaseOrefAlertListener {
