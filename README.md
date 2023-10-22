@@ -4,6 +4,8 @@ RedAlert הוא סוג של sideproject שלי.<br>
 <br><br>
 אז בניתי אחד 👍
 
+# כרגע עובד רק על שרתי [PaperMC](https://papermc.io)
+
 # אזהרה
 שימו לב שהלפאגין אינו מהווה תחליף להתרעות פקע"ר, לאפליקציית פקע"ר ולא ניתן להסתמך עליו במאה אחוז! השארו קשובים לסביבה ולהתראות פקע"ר!
 
