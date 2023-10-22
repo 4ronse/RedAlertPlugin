@@ -9,3 +9,4 @@ website: 4ronse.dev
 commands:
   redalert:
     description: "Bruh"
+    aliases: [ "ra", "oref" ]

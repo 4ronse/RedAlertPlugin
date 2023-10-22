@@ -2,30 +2,34 @@ package dev.ronse.redalert;
 
 import dev.ronse.redalert.commands.*;
 import dev.ronse.redalert.config.Config;
-import dev.ronse.redalert.listeners.*;
+import dev.ronse.redalert.listeners.IDisableAction;
 import dev.ronse.redalert.orefalerts.OrefAlert;
+import dev.ronse.redalert.orefalerts.OrefAlertListener;
 import dev.ronse.redalert.orefalerts.OrefAlertNotifier;
 import dev.ronse.redalert.orefalerts.OrefAlertType;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
+import java.util.Map;
+
 public final class RedAlert extends JavaPlugin {
-    public static Config config;
     private static RedAlert instance;
+    public static Config config;
+    public OrefAlertNotifier notifier;
 
     public static RedAlert getInstance() {
         return instance;
     }
 
-    public OrefAlertNotifier notifier;
-
     @Override
     public void onEnable() {
         instance = this;
-
         reloadConfig();
         registerCommands();
+        checkUpdate();
     }
 
     @Override
@@ -40,21 +44,21 @@ public final class RedAlert extends JavaPlugin {
                 .listener(new RedAlertListener() {
                     @Override
                     public void onOrefAlert(OrefAlert alert) {
-                        config.notifiers.getOrDefault(alert.alertType(), config.notifiers.get(OrefAlertType.DEFAULT))
+                        Map<OrefAlertType, List<OrefAlertListener>> notifiers = config.notifiers;
+                        notifiers.getOrDefault(alert.alertType(), notifiers.get(OrefAlertType.DEFAULT))
                                 .forEach(l -> l.onOrefAlert(alert));
                     }
 
                     @Override
                     public void onDisable() {
-                        config.notifiers.values().forEach(listOfListeners -> listOfListeners.forEach(listener -> {
-                            if (listener instanceof IDisableAction) {
-                                ((IDisableAction) listener).onDisable();
-                            }
-                        }));
+                        config.notifiers.values().stream()
+                                .flatMap(List::stream)
+                                .filter(listener -> listener instanceof IDisableAction)
+                                .map(listener -> (IDisableAction) listener)
+                                .forEach(IDisableAction::onDisable);
                     }
                 });
 
-        // config.notifiers.values().forEach(list -> list.forEach(builder::listener));
         notifier = builder.build();
         notifier.listen();
     }
@@ -62,11 +66,10 @@ public final class RedAlert extends JavaPlugin {
     private void shutdownNotifier() {
         if (notifier != null) {
             notifier.stop();
-            notifier.getListeners().forEach(listener -> {
-                if (listener instanceof IDisableAction) {
-                    ((IDisableAction) listener).onDisable();
-                }
-            });
+            notifier.getListeners().stream()
+                    .filter(listener -> listener instanceof IDisableAction)
+                    .map(listener -> (IDisableAction) listener)
+                    .forEach(IDisableAction::onDisable);
         }
         notifier = null;
     }
@@ -81,21 +84,31 @@ public final class RedAlert extends JavaPlugin {
     @SuppressWarnings("all")
     void registerCommand(String name, CommandExecutor executor) {
         PluginCommand cmd = getCommand(name);
-        if (cmd == null) {
+        if (cmd != null) {
+            cmd.setExecutor(executor);
+            if (executor instanceof TabCompleter) {
+                cmd.setTabCompleter((TabCompleter) executor);
+            }
+        } else {
             getLogger().severe("Failed to initiate /" + name);
-            return;
         }
-        cmd.setExecutor(executor);
     }
 
     void registerCommands() {
         RedAlertCommand redAlertCommand = new RedAlertCommand();
-
         redAlertCommand.registerCommand(new RedAlertHelpCommand(redAlertCommand));
         redAlertCommand.registerCommand(new RedAlertReloadCommand());
         redAlertCommand.registerCommand(new RedAlertTestCommand());
         redAlertCommand.registerCommand(new RedAlertListNotifiers());
-
         registerCommand("redalert", redAlertCommand);
+    }
+
+    @SuppressWarnings("all")
+    void checkUpdate() {
+        UpdateChecker.getVersion(v -> {
+            if (!v.isEmpty() && !getDescription().getVersion().equals(v)) {
+                getSLF4JLogger().warn("A new version is available on https://github.com/4ronse/RedAlertPlugin/releases");
+            }
+        }, e -> getSLF4JLogger().error("Failed to check for updates", e));
     }
 }

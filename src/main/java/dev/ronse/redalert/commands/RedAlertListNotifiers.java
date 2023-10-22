@@ -13,7 +13,9 @@ public class RedAlertListNotifiers implements IRedAlertCommand {
         OrefAlertType[] alertTypes = OrefAlertType.values();
         String[] alertTypeNames = new String[alertTypes.length];
 
-        for (int i = 0; i < alertTypes.length; i++) alertTypeNames[i] = alertTypes[i].name();
+        for (int i = 0; i < alertTypes.length; i++)
+            alertTypeNames[i] = String.format("<hover:show_text:'Copy %s'><click:copy_to_clipboard:%s>%s</click></hover>",
+                    alertTypes[i].name(), alertTypes[i].name(), alertTypes[i].name());
 
         builder.append(String.join("<bold><red> | <reset>", alertTypeNames));
 
