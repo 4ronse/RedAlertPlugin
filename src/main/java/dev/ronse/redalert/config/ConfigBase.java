@@ -12,14 +12,13 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.NotSerializableException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.nio.file.Files;
+import java.util.*;
 
 @SuppressWarnings({ "unused", "FieldCanBeLocal", "SameParameterValue" })
 public abstract class ConfigBase {
@@ -29,14 +28,21 @@ public abstract class ConfigBase {
     private final RedAlert plugin;
 
     public ConfigBase(RedAlert plugin, String path) {
-        this(plugin, new File(plugin.getDataFolder(), path));
+        this(plugin, path, path);
     }
 
-    private ConfigBase(RedAlert plugin, File file) {
+    public ConfigBase(RedAlert plugin, String path, String resourcePath) {
+        this(plugin, new File(plugin.getDataFolder(), path), path);
+    }
+
+    private ConfigBase(RedAlert plugin, File file, String resourceName) {
         this.file = file;
         config = new YamlConfiguration();
 
         this.plugin = plugin;
+
+        if(!file.exists())
+            RedAlert.getInstance().saveResource(resourceName, false);
 
         reload();
     }

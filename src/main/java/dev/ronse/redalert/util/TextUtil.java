@@ -9,6 +9,10 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class TextUtil {
 
+    public static Component deserialize(String msg) {
+        return MiniMessage.miniMessage().deserialize(msg);
+    }
+
     public static Component deserialize(String msg, OrefAlert alert) {
         var ae = alert.getAffectedAreas();
 

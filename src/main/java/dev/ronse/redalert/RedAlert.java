@@ -1,7 +1,7 @@
 package dev.ronse.redalert;
 
 import dev.ronse.redalert.commands.*;
-import dev.ronse.redalert.config.ConfigNew;
+import dev.ronse.redalert.config.Config;
 import dev.ronse.redalert.listeners.*;
 import dev.ronse.redalert.orefalerts.OrefAlert;
 import dev.ronse.redalert.orefalerts.OrefAlertNotifier;
@@ -11,7 +11,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RedAlert extends JavaPlugin {
-    public static ConfigNew config;
+    public static Config config;
     private static RedAlert instance;
 
     public static RedAlert getInstance() {
@@ -31,7 +31,7 @@ public final class RedAlert extends JavaPlugin {
     @Override
     public void reloadConfig() {
         shutdownNotifier();
-        config = new ConfigNew(this);
+        config = new Config(this);
 
         OrefAlertNotifier.Builder builder = new OrefAlertNotifier.Builder()
                 .every(config.interval)
@@ -94,6 +94,7 @@ public final class RedAlert extends JavaPlugin {
         redAlertCommand.registerCommand(new RedAlertHelpCommand(redAlertCommand));
         redAlertCommand.registerCommand(new RedAlertReloadCommand());
         redAlertCommand.registerCommand(new RedAlertTestCommand());
+        redAlertCommand.registerCommand(new RedAlertListNotifiers());
 
         registerCommand("redalert", redAlertCommand);
     }

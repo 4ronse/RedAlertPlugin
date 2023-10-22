@@ -1,0 +1,40 @@
+debug: false
+debug_source: http://localhost:8000/alerts.json
+interval: 1
+
+# For available notifiers run /redalert listnotifiers
+# Place holders:
+#  <cities_he>: Lists cities in hebrew
+#  <cities_en>: Lists cities in english
+#  <desc>: Lists description
+
+
+notifiers:
+  DEFAULT:  # required
+    chat:
+      format: |-
+        <color:#FF0000> ====== <color:#AA0000><bold><underlined><hover:show_text:'Fichtl\'s Lied'><click:open_url:'https://youtu.be/1T14eOUf-28&t=12'>צבע אדום</click></hover></underlined></bold><color:#FF0000> ======
+        <color:#AA0000><cities_he>
+        <color:#FFA500><desc>
+      disable: false
+
+    console:
+      format: |-
+        <color:#FF0000> ====== <color:#AA0000><bold><underlined>Tseva Adom</underlined></bold><color:#FF0000> ======
+        <color:#AA0000><bold><cities_en>
+      disable: false
+
+    sound:
+      sound_key: minecraft:entity.evoker.prepare_wololo
+      source: MASTER
+      volume: 2.0
+      pitch: 1.0
+      disable: false
+
+    bossbar:
+      format: <red><cities_he>
+      color: RED
+      duration: 15
+      disable: false
+
+
