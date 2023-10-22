@@ -28,6 +28,11 @@ public class RedAlertListNotifiers implements IRedAlertCommand {
     }
 
     @Override
+    public String permission() {
+        return "redalert.admin";
+    }
+
+    @Override
     public String getName() {
         return "listnotifiers";
     }

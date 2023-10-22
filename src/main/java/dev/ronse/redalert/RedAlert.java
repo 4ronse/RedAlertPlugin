@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 public final class RedAlert extends JavaPlugin {
+    public static final String GITHUB_PAGE = "https://github.com/4ronse/RedAlertPlugin/releases";
+    public static final String PAYPAL_PAGE = "https://www.paypal.com/donate/?hosted_button_id=GDXSJCXNYFH7S";
+
     private static RedAlert instance;
     public static Config config;
     public OrefAlertNotifier notifier;

@@ -1,7 +1,8 @@
 package dev.ronse.redalert.commands;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
+import dev.ronse.redalert.RedAlert;
+import dev.ronse.redalert.util.TextUtil;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -18,12 +19,24 @@ public class RedAlertHelpCommand implements IRedAlertCommand {
         List<IRedAlertCommand> allowedCommands = getAllowedCommands(sender);
 
         if(args.isEmpty()) {
+            sender.sendMessage(TextUtil.deserialize(
+                    String.join("\n",
+                            "<red>RedAlert הוא פלאגין חינמי שמתריע כאשר מתקבלת התראה מפיקוד העורף",
+                            "<red><bold> הפלאגין אינו מהווה תחליף לאפליקציית פקע\"ר או להתראות הקוליות עצמן ולא ניתן להסתמך עליו!</bold>",
+                            "<red>להורדה: <dl>",
+                            "<red>לתרומה ❤: <donate>",
+                            ""
+                    ),
+                    Placeholder.parsed("dl", String.format("<reset><color:#A00000><underlined><click:open_url:'%s'>%s<reset>",
+                            RedAlert.GITHUB_PAGE, RedAlert.GITHUB_PAGE)),
+                    Placeholder.parsed("donate", String.format("<reset><blue><underlined><click:open_url:'%s'>%s<reset>",
+                            RedAlert.PAYPAL_PAGE, RedAlert.PAYPAL_PAGE))
+            ));
+
             allowedCommands.forEach(cmd -> sender.sendMessage(
-                    Component.text("/redalert").color(TextColor.fromHexString("#FF0000"))
-                            .append(Component.space())
-                            .append(Component.text(cmd.getName()).color(TextColor.fromHexString("#A00000")))
-                            .append(Component.text(" - ").color(TextColor.fromHexString("#FF0000")))
-                            .append(Component.text(cmd.getHelp()).color(TextColor.fromHexString("#A00000")))
+                    TextUtil.deserialize("<color:#FF0000>/redalert <color:#A00000><cmdname><color:#FF0000> - <color:#A00000><cmdhelp>",
+                            Placeholder.parsed("cmdname", cmd.getName()),
+                            Placeholder.parsed("cmdhelp", cmd.getHelp()))
             ));
 
             return;
@@ -44,17 +57,15 @@ public class RedAlertHelpCommand implements IRedAlertCommand {
         }
 
         sender.sendMessage(
-                Component.text("/redalert").color(TextColor.fromHexString("#FF0000"))
-                        .append(Component.space())
-                        .append(Component.text(cmd.getName()).color(TextColor.fromHexString("#A00000")))
-                        .append(Component.text(" - ").color(TextColor.fromHexString("#FF0000")))
-                        .append(Component.text(cmd.getHelp()).color(TextColor.fromHexString("#A00000")))
+                TextUtil.deserialize("<color:#FF0000>/redalert <color:#A00000><cmdname><color:#FF0000> - <color:#A00000><cmdhelp>",
+                        Placeholder.parsed("cmdname", cmd.getName()),
+                        Placeholder.parsed("cmdhelp", cmd.getHelp()))
         );
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, List<String> args) {
-        return IRedAlertCommand.super.onTabComplete(sender, List.of());
+        return getAllowedCommands(sender).stream().map(IRedAlertCommand::getName).toList();
     }
 
     @Override

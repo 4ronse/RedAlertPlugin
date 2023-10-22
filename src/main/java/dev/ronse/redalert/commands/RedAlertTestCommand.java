@@ -23,7 +23,7 @@ public class RedAlertTestCommand implements IRedAlertCommand {
                 0,
                 OrefAlertType.get(alertCategory),
                 OrefDistrictsUtil.getRandomStates(alertCount),
-                "שצ"
+                "התראת בדיקה"
         ));
     }
 
@@ -58,7 +58,7 @@ public class RedAlertTestCommand implements IRedAlertCommand {
 
     @Override
     public String permission() {
-        return "redalert.test";
+        return "redalert.admin";
     }
 
     @Override

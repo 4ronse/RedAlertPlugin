@@ -13,10 +13,11 @@ import okhttp3.ResponseBody;
 import java.io.IOException;
 public class Requester {
     public static OrefAlert checkForAlerts() throws IOException, ResponseStatusException, ConfigNotReady {
-        if(RedAlert.config == null) throw new ConfigNotReady();
+        if (RedAlert.config == null) {
+            throw new ConfigNotReady();
+        }
 
-        String url = RedAlert.config.debug ? RedAlert.config.debugSource :
-                "https://www.oref.org.il/WarningMessages/alert/alerts.json";
+        String url = RedAlert.config.debug ? RedAlert.config.debugSource : "https://www.oref.org.il/WarningMessages/alert/alerts.json";
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -26,18 +27,24 @@ public class Requester {
                 .header("Content-Type", "application/json")
                 .build();
 
-        Response res = client.newCall(request).execute();
-        ResponseBody rb = res.body();
+        try (Response res = client.newCall(request).execute()) {
+            if (res.code() != 200) {
+                throw new ResponseStatusException(res.code(), 200);
+            }
 
-        if(res.code() != 200) throw new ResponseStatusException(res.code(), 200);
-        if(rb == null) return null;
+            try (ResponseBody rb = res.body()) {
+                if (rb == null) {
+                    return null;
+                }
 
-        String json = rb.string();
-        if(json.length() < 5) return null;
+                String json = rb.string();
+                if (json.length() < 5) {
+                    return null;
+                }
 
-        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        res.close();
-
-        return new OrefAlert(jsonObject);
+                JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+                return new OrefAlert(jsonObject);
+            }
+        }
     }
 }

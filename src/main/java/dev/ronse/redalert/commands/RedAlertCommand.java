@@ -6,6 +6,7 @@ import dev.ronse.redalert.exceptions.ArgumentCountException;
 import dev.ronse.redalert.exceptions.ArgumentException;
 import dev.ronse.redalert.exceptions.NotEnoughArguments;
 import dev.ronse.redalert.exceptions.TooManyArguments;
+import dev.ronse.redalert.util.TextUtil;
 import org.bukkit.command.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +33,7 @@ public class RedAlertCommand implements CommandExecutor, TabCompleter {
         IRedAlertCommand command = getCommand(commandName);
 
         if (command == null) {
-            sender.sendMessage("Piss off");
+            sender.sendMessage(TextUtil.deserialize("<color:#A00000>[Red Alert] <color:#FF0000>Command not found"));
             return true;
         }
 
@@ -41,12 +42,12 @@ public class RedAlertCommand implements CommandExecutor, TabCompleter {
         boolean consoleAllowed = command.consoleAllowed();
 
         if(sender instanceof ConsoleCommandSender && !consoleAllowed) {
-            sender.sendMessage("Console not allowed (racism)");
+            sender.sendMessage(TextUtil.deserialize("<color:#A00000>[Red Alert] <color:#FF0000>Console not allowed"));
             return true;
         }
 
         if(perm != null && !sender.hasPermission(perm)) {
-            sender.sendMessage("You lil nigga, try becoming a big nigga");
+            sender.sendMessage(TextUtil.deserialize("<color:#A00000>[Red Alert] <color:#FF0000>You are not allowed to run this command!"));
             return true;
         }
 
@@ -58,7 +59,10 @@ public class RedAlertCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            invalidArgs.forEach(arg -> sender.sendMessage("Value for argument " + arg + " is invalid."));
+            invalidArgs.forEach(arg -> sender.sendMessage(
+                    TextUtil.deserialize("<color:#A00000>[Red Alert] <color:#FF0000>Value for argument <color:#A00000>"
+                            + arg + " <color:#FF0000>is invalid."))
+            );
 
         } catch (ArgumentException e) {
             sender.sendMessage(e.getMessage());
@@ -75,8 +79,14 @@ public class RedAlertCommand implements CommandExecutor, TabCompleter {
 
         IRedAlertCommand command = getCommand(commandName);
 
-        if(commandName.isEmpty() || commandName.isBlank()) return commands.stream().map(IRedAlertCommand::getName).toList();
-        if(command != null) return command.onTabComplete(sender, args);
+        if(commandName.isEmpty() || commandName.isBlank()) return commands
+                .stream()
+                .filter(cmd -> cmd.permission() == null || sender.hasPermission(cmd.permission()))
+                .map(IRedAlertCommand::getName)
+                .toList();
+        if(command != null)
+            if(command.permission() != null && !sender.hasPermission(command.permission())) return List.of();
+            else return command.onTabComplete(sender, args);
         return List.of();
     }
 

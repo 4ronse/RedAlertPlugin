@@ -1,8 +1,7 @@
 package dev.ronse.redalert.commands;
 
 import dev.ronse.redalert.RedAlert;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
+import dev.ronse.redalert.util.TextUtil;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -12,14 +11,12 @@ public class RedAlertReloadCommand implements IRedAlertCommand {
     public void onCommand(CommandSender sender, List<String> args) {
         RedAlert.getInstance().reloadConfig();
 
-        sender.sendMessage(
-                Component.text("[Red Alert]").color(TextColor.fromHexString("#A00000"))
-                        .append(Component.text(" Reloaded config.yml").color(TextColor.fromHexString("#00A000"))));
+        sender.sendMessage(TextUtil.deserialize("<color:#A00000>[Red Alert] <color:#00A000>Reloaded config.yml"));
     }
 
     @Override
     public String permission() {
-        return "redalert.reload";
+        return "redalert.admin";
     }
 
     @Override

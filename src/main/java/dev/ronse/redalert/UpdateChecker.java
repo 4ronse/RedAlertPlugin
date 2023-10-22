@@ -16,20 +16,20 @@ public class UpdateChecker {
     public static JsonObject getLatestRelease() throws IOException, ResponseStatusException {
         OkHttpClient client = new OkHttpClient();
 
-        Response res = client.newCall(new Request.Builder()
-                .url("https://api.github.com/repos/4ronse/RedAlertPlugin/releases/latest")
-                .build())
-                .execute();
-        ResponseBody rb = res.body();
+        try (Response res = client.newCall(new Request.Builder()
+                        .url("https://api.github.com/repos/4ronse/RedAlertPlugin/releases/latest")
+                        .build())
+                .execute()
+        ) {
+            if (res.code() != 200) throw new ResponseStatusException(res.code(), 200);
 
-        if(res.code() != 200) throw new ResponseStatusException(res.code(), 200);
-        if(rb == null) return null;
+            try (ResponseBody rb = res.body()) {
+                if (rb == null) return null;
 
-        String jsonString = rb.string();
-        JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
-        res.close();
-
-        return json;
+                String jsonString = rb.string();
+                return JsonParser.parseString(jsonString).getAsJsonObject();
+            }
+        }
     }
 
     public static void getVersion(Consumer<String> success, Consumer<Exception> error) {

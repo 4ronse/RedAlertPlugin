@@ -3,10 +3,10 @@ version: '${project.version}'
 main: dev.ronse.redalert.RedAlert
 api-version: '1.20'
 authors: [4ronse]
-description: Sends "Tseva Adom" alerts in chat
+description: Sends "Tseva Adom" alerts
 website: 4ronse.dev
 
 commands:
   redalert:
-    description: "Bruh"
+    description: "Main command for red alert plugin"
     aliases: [ "ra", "oref" ]
